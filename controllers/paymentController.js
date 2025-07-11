@@ -1,7 +1,7 @@
 // controllers/paymentController.js
 const Razorpay = require('razorpay');
 const crypto = require('crypto');
-const Plans_Payment_Info = require('../models/PlansPaymentInfo');
+const Plans_Payment_Info = require('../models/Payment');
 const dotenv = require('dotenv');
 const sequelize = require('../database/db');
 const { QueryTypes } = require('sequelize');

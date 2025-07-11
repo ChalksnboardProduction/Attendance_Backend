@@ -1,14 +1,10 @@
-import { DataTypes } from "sequelize";
-import sequelize from "../database/db.js";
+const { DataTypes } = require('sequelize');
+const sequelize = require('../database/db');
 
 const Plans_Payment_Info = sequelize.define('PlansPaymentInfo', {
   user_id: {
     type: DataTypes.BIGINT,
-    allowNull: false,
-    references: {
-      model: 'school_users', // Referencing the 'school_users' table's 'id' column
-      key: 'id'
-    }
+    allowNull: false
   },
   orderId: {
     type: DataTypes.STRING,
@@ -51,4 +47,4 @@ const Plans_Payment_Info = sequelize.define('PlansPaymentInfo', {
   freezeTableName: true // Prevents Sequelize from pluralizing the table name
 });
 
-export default Plans_Payment_Info;
+module.exports = Plans_Payment_Info;

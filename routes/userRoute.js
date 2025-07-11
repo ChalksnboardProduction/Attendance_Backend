@@ -8,13 +8,11 @@ router.get('/', userController.getAllUsers);
 // Get user by ID
 router.get('/:id', userController.getUserById);
 
-// Create user
+// Register user (name and phone only)
+router.post('/register-phone', userController.createUser);
 router.post('/', userController.createUser);
 
-// Update user
-router.put('/:id', userController.updateUser);
-
-// Delete user
-router.delete('/:id', userController.deleteUser);
+// Login user by phone number
+router.post('/login', userController.loginUser);
 
 module.exports = router; 
