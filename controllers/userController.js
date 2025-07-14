@@ -1,4 +1,12 @@
 const User = require('../models/User'); // Sequelize User model
+const dotenv = require('dotenv');
+
+// Load environment variables
+dotenv.config();
+
+// Environment variables
+const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key_here';
+const NODE_ENV = process.env.NODE_ENV || 'development';
 
 exports.getAllUsers = async (req, res) => {
   try {
@@ -77,11 +85,21 @@ exports.loginUser = async (req, res) => {
       return res.status(404).json({ error: 'User not found. Please register first.' });
     }
 
-    console.log("[loginUser] User logged in successfully:", user.id);
-    res.status(200).json({
-      message: 'Login successful',
-      user: { id: user.id, name: user.name, phone: user.phone }
-    });
+         console.log("[loginUser] User logged in successfully:", user.id);
+     
+     // Generate JWT token
+     const jwt = require('jsonwebtoken');
+     const token = jwt.sign(
+       { userId: user.id, phone: user.phone },
+       JWT_SECRET,
+       { expiresIn: '7d' }
+     );
+     
+     res.status(200).json({
+       message: 'Login successful',
+       token,
+       user: { id: user.id, name: user.name, phone: user.phone }
+     });
 
   } catch (err) {
     console.log("[loginUser] error:", err);

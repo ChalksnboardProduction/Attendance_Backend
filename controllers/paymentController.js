@@ -8,13 +8,29 @@ const { QueryTypes } = require('sequelize');
 
 dotenv.config();
 
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID,
-  key_secret: process.env.RAZORPAY_KEY_SECRET
-});
+// Check if Razorpay credentials are available
+if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
+  console.warn('⚠️  Razorpay credentials not found. Please set RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET in your .env file');
+  console.warn('   Payment functionality will be disabled until credentials are configured.');
+}
+
+const razorpay = process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET 
+  ? new Razorpay({
+      key_id: process.env.RAZORPAY_KEY_ID,
+      key_secret: process.env.RAZORPAY_KEY_SECRET
+    })
+  : null;
 
 const makePayment = async (req, res) => {
   try {
+    // Check if Razorpay is configured
+    if (!razorpay) {
+      return res.status(503).json({ 
+        success: false, 
+        message: 'Payment service is not configured. Please contact administrator.' 
+      });
+    }
+
     const { amount, currency = 'INR', email, phone_number, user_id, name } = req.body;
 
     //                             =========> amount = ",amount)
@@ -60,6 +76,14 @@ const makePayment = async (req, res) => {
 
 const verifyPayment = async (req, res) => {
   try {
+    // Check if Razorpay is configured
+    if (!process.env.RAZORPAY_KEY_SECRET) {
+      return res.status(503).json({ 
+        success: false, 
+        message: 'Payment service is not configured. Please contact administrator.' 
+      });
+    }
+
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
 
     const generated_signature = crypto

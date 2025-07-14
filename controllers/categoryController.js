@@ -1,4 +1,8 @@
 const Category = require('../models/Category');
+const dotenv = require('dotenv');
+
+// Load environment variables
+dotenv.config();
 
 exports.getAllCategories = async (req, res) => {
   try {

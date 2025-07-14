@@ -1,4 +1,8 @@
 const Cart = require('../models/Cart');
+const dotenv = require('dotenv');
+
+// Load environment variables
+dotenv.config();
 
 exports.getAllCarts = async (req, res) => {
   console.log('GET /cart - getAllCarts called');

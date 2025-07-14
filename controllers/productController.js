@@ -1,4 +1,8 @@
 const Product = require('../models/Product');
+const dotenv = require('dotenv');
+
+// Load environment variables
+dotenv.config();
 
 exports.getAllProducts = async (req, res) => {
   try {
