@@ -40,7 +40,7 @@ app.use('/category', categoryRoute);
 app.use('/payment', paymentRoute);
 app.use('/attendance', attendanceRoute);
 
-const PORT = process.env.SERVER_PORT || 8000;
+const PORT = process.env.PORT || process.env.SERVER_PORT || 8000;
 
 sequelize.sync({ alter: true }).then(async () => {
     // Seed Admin
